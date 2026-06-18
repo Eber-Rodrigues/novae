@@ -4,94 +4,228 @@ import { LoadingOverlay } from "./LoadingOverlay";
 import { EntryScreen } from "./EntryScreen";
 import { UnsupportedScreen } from "./UnsupportedScreen";
 
- 
-const CARDS_CONFIG = [
+type DeviceLayout = "desktop" | "tablet";
+
+type CardPosition = { top?: string; bottom?: string; left?: string; right?: string };
+type CardSize = { w: number; h: number };
+
+type FloatingCardLayout = {
+  position: CardPosition;
+  rotation: number;
+  size: CardSize;
+  labelOffset?: number;
+};
+
+interface FloatingCardConfig {
+  id: string;
+  label: string;
+  image: string;
+  link: string;
+  zIndex: number;
+  labelPosition?: "top" | "bottom";
+  labelAlign?: "left";
+  layouts: Record<DeviceLayout, FloatingCardLayout>;
+}
+
+type ResolvedFloatingCardConfig = Omit<FloatingCardConfig, "layouts"> & FloatingCardLayout;
+
+interface RepelCardLayout {
+  position: CardPosition;
+  rotation: number;
+  size: CardSize;
+}
+
+interface RepelCardConfig {
+  id: string;
+  image: string;
+  zIndex: number;
+  layouts: Record<DeviceLayout, RepelCardLayout>;
+}
+
+type ResolvedRepelCardConfig = Omit<RepelCardConfig, "layouts"> & RepelCardLayout;
+
+const TABLET_MIN_WIDTH = 768;
+const DESKTOP_MIN_WIDTH = 1024;
+
+const resolveFloatingCardLayout = (
+  card: FloatingCardConfig,
+  deviceLayout: DeviceLayout,
+): ResolvedFloatingCardConfig => ({
+  id: card.id,
+  label: card.label,
+  image: card.image,
+  link: card.link,
+  zIndex: card.zIndex,
+  labelPosition: card.labelPosition,
+  labelAlign: card.labelAlign,
+  ...card.layouts[deviceLayout],
+});
+
+const resolveRepelCardLayout = (
+  card: RepelCardConfig,
+  deviceLayout: DeviceLayout,
+): ResolvedRepelCardConfig => ({
+  id: card.id,
+  image: card.image,
+  zIndex: card.zIndex,
+  ...card.layouts[deviceLayout],
+});
+
+const CARDS_CONFIG: FloatingCardConfig[] = [
   {
     id: "c1",
     label: "Partnerships",
     image: "images/cards3.png",
-    position: { top: "65%", left: "35%" },
-    rotation: 5,
     link: "#partnerships",
-    size: { w: 390, h: 200 },
     zIndex: 3,
     labelPosition: "top",
-    labelOffset: 30,
+    layouts: {
+      desktop: {
+        position: { top: "65%", left: "35%" },
+        rotation: 5,
+        size: { w: 390, h: 200 },
+        labelOffset: 30,
+      },
+      tablet: {
+        position: { top: "63%", left: "30%" },
+        rotation: 3,
+        size: { w: 320, h: 170 },
+        labelOffset: 24,
+      },
+    },
   },
   {
     id: "c2",
     label: "NOVAe",
     image: "images/novae.png",
-    position: { top: "14%", left: "33%" },
-    rotation: 15,
     link: "#novae",
-    size: { w: 440, h: 350 },
     zIndex: 2,
     labelPosition: "top",
-    labelOffset: 30,
-
+    layouts: {
+      desktop: {
+        position: { top: "14%", left: "33%" },
+        rotation: 15,
+        size: { w: 440, h: 350 },
+        labelOffset: 30,
+      },
+      tablet: {
+        position: { top: "16%", left: "26%" },
+        rotation: 10,
+        size: { w: 360, h: 290 },
+        labelOffset: 22,
+      },
+    },
   },
   {
     id: "c3",
     label: "Newsletter",
     image: "images/newsletter.png",
-    position: { top: "10%", right: "58%" },
-    rotation: -20,
     link: "#newsletter",
-    size: { w: 690, h: 290 },
     zIndex: 4,
-    labelOffset: 70,
     labelPosition: "bottom",
+    layouts: {
+      desktop: {
+        position: { top: "10%", right: "58%" },
+        rotation: -20,
+        size: { w: 690, h: 290 },
+        labelOffset: 70,
+      },
+      tablet: {
+        position: { top: "18%", right: "55%" },
+        rotation: -13,
+        size: { w: 530, h: 230 },
+        labelOffset: 56,
+      },
+    },
   },
-  
   {
     id: "c5",
     label: "Meet the Team",
     image: "images/team4.png",
-    position: { bottom: "38%", left: "74%" },
-    rotation: 10,
     link: "#team",
-    size: { w: 360, h: 270 },
     zIndex: 3,
-    labelOffset: 15,
     labelPosition: "bottom",
+    layouts: {
+      desktop: {
+        position: { bottom: "38%", left: "74%" },
+        rotation: 10,
+        size: { w: 360, h: 270 },
+        labelOffset: 15,
+      },
+      tablet: {
+        position: { bottom: "42%", left: "67%" },
+        rotation: 7,
+        size: { w: 300, h: 220 },
+        labelOffset: 12,
+      },
+    },
   },
   {
     id: "c6",
     label: "Knowledge Base",
     image: "images/folder.png",
-    position: { bottom: "-14%", right: "-2%" },
-    rotation: 20,
     link: "#knowledge-base",
-    size: { w: 300, h: 300 },
     zIndex: 2,
     labelPosition: "bottom",
-    labelOffset: 220,
     labelAlign: "left",
+    layouts: {
+      desktop: {
+        position: { bottom: "-14%", right: "-2%" },
+        rotation: 20,
+        size: { w: 300, h: 300 },
+        labelOffset: 220,
+      },
+      tablet: {
+        position: { bottom: "-8%", right: "0%" },
+        rotation: 14,
+        size: { w: 250, h: 250 },
+        labelOffset: 176,
+      },
+    },
   },
   {
     id: "c4",
     label: "Projects",
     image: "images/notebook.png",
-    position: { bottom: "-16%", right: "15%" },
-    rotation: -7,
     link: "#projects",
-    size: { w: 300, h: 380 },
     zIndex: 2,
-    labelOffset: 40,
     labelPosition: "top",
+    layouts: {
+      desktop: {
+        position: { bottom: "-16%", right: "15%" },
+        rotation: -7,
+        size: { w: 300, h: 380 },
+        labelOffset: 40,
+      },
+      tablet: {
+        position: { bottom: "-12%", right: "12%" },
+        rotation: -5,
+        size: { w: 255, h: 320 },
+        labelOffset: 30,
+      },
+    },
   },
   {
     id: "c7",
     label: "Current Project",
     image: "images/note5.png",
-    position: { bottom: "57%", right: "25%" },
-    rotation: 10,
     link: "#current-project",
-    size: { w: 195, h: 195 },
     zIndex: 2,
     labelPosition: "bottom",
-    labelOffset: 6,
+    layouts: {
+      desktop: {
+        position: { bottom: "57%", right: "25%" },
+        rotation: 10,
+        size: { w: 195, h: 195 },
+        labelOffset: 6,
+      },
+      tablet: {
+        position: { bottom: "55%", right: "23%" },
+        rotation: 7,
+        size: { w: 165, h: 165 },
+        labelOffset: 6,
+      },
+    },
   },
 ];
  
@@ -167,7 +301,7 @@ export function Navbar() {
 }
  
  
-function FloatingCard({ card, index}) {
+function FloatingCard({ card, index }: { card: ResolvedFloatingCardConfig; index: number }) {
   const [isHovered, setIsHovered] = useState(false);
   const positionStyle = {
     position: "absolute",
@@ -292,35 +426,44 @@ function FloatingCard({ card, index}) {
   );
 }
 
-interface RepelCardConfig {
-  id: string;
-  image: string;
-  position: { top?: string; bottom?: string; left?: string; right?: string };
-  rotation: number;
-  size: { w: number; h: number };
-  zIndex: number;
-}
-
 const REPEL_CARDS_CONFIG: RepelCardConfig[] = [
   {
     id: "r1",
     image: "images/pencil.png",
-    position: { top: "35%", left: "4%" },
-    rotation: 60,
-    size: { w: 400, h: 400 },
     zIndex: 5,
+    layouts: {
+      desktop: {
+        position: { top: "35%", left: "4%" },
+        rotation: 60,
+        size: { w: 400, h: 400 },
+      },
+      tablet: {
+        position: { top: "38%", left: "-3%" },
+        rotation: 48,
+        size: { w: 300, h: 300 },
+      },
+    },
   },
   {
     id: "r2",
     image: "images/paper_clips.png",
-    position: { top: "70%", left: "20%" },
-    rotation: -8,
-    size: { w: 180, h: 180 },
     zIndex: 5,
+    layouts: {
+      desktop: {
+        position: { top: "70%", left: "20%" },
+        rotation: -8,
+        size: { w: 180, h: 180 },
+      },
+      tablet: {
+        position: { top: "70%", left: "16%" },
+        rotation: -5,
+        size: { w: 150, h: 150 },
+      },
+    },
   },
 ];
 
-function RepelCard({ card }: { card: RepelCardConfig }) {
+function RepelCard({ card }: { card: ResolvedRepelCardConfig }) {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
 
@@ -378,7 +521,10 @@ function RepelCard({ card }: { card: RepelCardConfig }) {
   );
 }
  
-export function HeroSection() {
+export function HeroSection({ deviceLayout }: { deviceLayout: DeviceLayout }) {
+  const floatingCards = CARDS_CONFIG.map((card) => resolveFloatingCardLayout(card, deviceLayout));
+  const repelCards = REPEL_CARDS_CONFIG.map((card) => resolveRepelCardLayout(card, deviceLayout));
+
   return (
     <section
       className="hero-section"
@@ -485,10 +631,10 @@ export function HeroSection() {
  
       {/* Floating cards */}
 <div className="hero-content" style={{ position: "absolute", inset: 0, zIndex: 10 }}>
-  {CARDS_CONFIG.map((card, i) => (
+  {floatingCards.map((card, i) => (
     <FloatingCard key={card.id} card={card} index={i} />
   ))}
-  {REPEL_CARDS_CONFIG.map((card) => (
+  {repelCards.map((card) => (
     <RepelCard key={card.id} card={card} />
   ))}
 </div>
@@ -723,6 +869,29 @@ export function HeroSection() {
   );
 }
 
+function resolveScreenMode(): { screenStatus: "ok" | "unsupported" | "rotate"; deviceLayout: DeviceLayout } {
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+  const isLandscape = w > h;
+  const isTabletWidth = w >= TABLET_MIN_WIDTH && w < DESKTOP_MIN_WIDTH;
+  const isDesktopWidth = w >= DESKTOP_MIN_WIDTH;
+  const fallbackDeviceLayout: DeviceLayout = isDesktopWidth ? "desktop" : "tablet";
+
+  if (!isLandscape && (isTabletWidth || isDesktopWidth)) {
+    return { screenStatus: "rotate", deviceLayout: isDesktopWidth ? "desktop" : "tablet" };
+  }
+
+  if (isLandscape && isDesktopWidth) {
+    return { screenStatus: "ok", deviceLayout: "desktop" };
+  }
+
+  if (isLandscape && isTabletWidth) {
+    return { screenStatus: "ok", deviceLayout: "tablet" };
+  }
+
+  return { screenStatus: "unsupported", deviceLayout: fallbackDeviceLayout };
+}
+
 export default function App() {
   const [stage, setStage] = useState<"entry" | "loading" | "ready">(() => {
   return sessionStorage.getItem("novae_animated") === "true" ? "ready" : "entry";
@@ -735,31 +904,24 @@ export default function App() {
   setStage("loading");
 };
 
-  const [screenStatus, setScreenStatus] = useState<"ok" | "unsupported" | "rotate">(() => {
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const isLandscape = w > h;
-  if (w >= 1024 && isLandscape) return "ok";
-  if (w < 1024 && w > 600 && !isLandscape) return "rotate"; // tablet portrait
-  return "unsupported";
-});
+  const initialMode = resolveScreenMode();
+  const [screenStatus, setScreenStatus] = useState<"ok" | "unsupported" | "rotate">(initialMode.screenStatus);
+  const [deviceLayout, setDeviceLayout] = useState<DeviceLayout>(initialMode.deviceLayout);
 
-useEffect(() => {
-  const check = () => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const isLandscape = w > h;
-    if (w >= 1024 && isLandscape) setScreenStatus("ok");
-    else if (w >= 600 && !isLandscape) setScreenStatus("rotate");
-    else setScreenStatus("unsupported");
-  };
-  window.addEventListener("resize", check);
-  window.addEventListener("orientationchange", check);
-  return () => {
-    window.removeEventListener("resize", check);
-    window.removeEventListener("orientationchange", check);
-  };
-}, []);
+  useEffect(() => {
+    const check = () => {
+      const nextMode = resolveScreenMode();
+      setScreenStatus(nextMode.screenStatus);
+      setDeviceLayout(nextMode.deviceLayout);
+    };
+
+    window.addEventListener("resize", check);
+    window.addEventListener("orientationchange", check);
+    return () => {
+      window.removeEventListener("resize", check);
+      window.removeEventListener("orientationchange", check);
+    };
+  }, []);
 
 
   return (
@@ -791,7 +953,7 @@ useEffect(() => {
 >
   <div className="hero-scale-root">
     <Navbar />
-    <HeroSection />
+    <HeroSection deviceLayout={deviceLayout} />
   </div>
 </motion.div>
       </>
