@@ -522,8 +522,31 @@ function RepelCard({ card }: { card: ResolvedRepelCardConfig }) {
 }
  
 export function HeroSection({ deviceLayout }: { deviceLayout: DeviceLayout }) {
-  const floatingCards = CARDS_CONFIG.map((card) => resolveFloatingCardLayout(card, deviceLayout));
-  const repelCards = REPEL_CARDS_CONFIG.map((card) => resolveRepelCardLayout(card, deviceLayout));
+  const [scale, setScale] = useState(1);
+  const CARD_BOOST = 1.15; // boost card sizes by ~15%
+
+  useEffect(() => {
+    const DESIGN_WIDTH = 1340;
+    const MIN_SCALE = 0.85;
+    const MAX_SCALE = 2.0;
+    const updateScale = () => {
+      const sRaw = Math.max(MIN_SCALE, Math.min(window.innerWidth / DESIGN_WIDTH, MAX_SCALE));
+      const s = Number(sRaw.toFixed(3));
+      setScale(s);
+    };
+    updateScale();
+    window.addEventListener("resize", updateScale);
+    return () => window.removeEventListener("resize", updateScale);
+  }, []);
+
+  const floatingCards = CARDS_CONFIG.map((card) => {
+    const rc = resolveFloatingCardLayout(card, deviceLayout);
+    return { ...rc, size: { w: Math.round(rc.size.w * scale * CARD_BOOST), h: Math.round(rc.size.h * scale * CARD_BOOST) } };
+  });
+  const repelCards = REPEL_CARDS_CONFIG.map((card) => {
+    const rc = resolveRepelCardLayout(card, deviceLayout);
+    return { ...rc, size: { w: Math.round(rc.size.w * scale * CARD_BOOST), h: Math.round(rc.size.h * scale * CARD_BOOST) } };
+  });
 
   return (
     <section
