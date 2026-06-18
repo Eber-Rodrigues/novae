@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { LoadingOverlay } from "./LoadingOverlay";
 import { EntryScreen } from "./EntryScreen";
 import { UnsupportedScreen } from "./UnsupportedScreen";
+import MobileHero from "./MobileHero";
 
 type DeviceLayout = "desktop" | "tablet";
 
@@ -45,7 +46,7 @@ interface RepelCardConfig {
 type ResolvedRepelCardConfig = Omit<RepelCardConfig, "layouts"> & RepelCardLayout;
 
 const TABLET_MIN_WIDTH = 1204;
-const DESKTOP_MIN_WIDTH = 1436;
+const DESKTOP_MIN_WIDTH = 1280;
 
 const resolveFloatingCardLayout = (
   card: FloatingCardConfig,
@@ -87,9 +88,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 30,
       },
       tablet: {
-        position: { top: "50%", left: "35%" },
+        position: { top: "56%", left: "36%" },
         rotation: 3,
-        size: { w: 320, h: 230 },
+        size: { w: 300, h: 210 },
         labelOffset: 24,
       },
     },
@@ -131,7 +132,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 70,
       },
       tablet: {
-        position: { top: "12%", right: "60%" },
+        position: { top: "8%", right: "62%" },
         rotation: -30,
         size: { w: 530, h: 280 },
         labelOffset: 56,
@@ -153,7 +154,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 15,
       },
       tablet: {
-        position: { bottom: "40%", left: "70%" },
+        position: { bottom: "43%", left: "72%" },
         rotation: 15,
         size: { w: 300, h: 280 },
         labelOffset: 12,
@@ -176,9 +177,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 220,
       },
       tablet: {
-        position: { bottom: "8%", right: "0%" },
-        rotation: 14,
-        size: { w: 250, h: 250 },
+        position: { bottom: "2%", right: "-2%" },
+        rotation: 20,
+        size: { w: 280, h: 280 },
         labelOffset: 176,
       },
     },
@@ -198,9 +199,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 40,
       },
       tablet: {
-        position: { bottom: "8%", right: "23%" },
-        rotation: -15,
-        size: { w: 255, h: 320 },
+        position: { bottom: "2%", right: "15%" },
+        rotation: -10,
+        size: { w: 310, h: 335 },
         labelOffset: 30,
       },
     },
@@ -220,7 +221,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 6,
       },
       tablet: {
-        position: { bottom: "60%", right: "29%" },
+        position: { bottom: "70%", right: "28%" },
         rotation: 7,
         size: { w: 165, h: 165 },
         labelOffset: 6,
@@ -309,7 +310,7 @@ function FloatingCard({ card, index }: { card: ResolvedFloatingCardConfig; index
     height: card.size.h,
     zIndex: isHovered ? 50 : card.zIndex,
     ...card.position,
-  };
+  } as const;
  
   const baseRotate = card.rotation;
   const hoverRotateShift = card.rotation > 0 ? -1.2 : 1.2;
@@ -729,7 +730,7 @@ export function HeroSection({ deviceLayout }: { deviceLayout: DeviceLayout }) {
   transition={{ duration: 1.0, delay: 1.4, ease: [0.16, 1, 0.3, 1] }}
   style={{
   position: "absolute",
-  bottom: 20,
+  bottom: deviceLayout === "tablet" ? "15%" : 20,
   left: 20,
   zIndex: 20,
   width: 240,
@@ -893,28 +894,39 @@ export function HeroSection({ deviceLayout }: { deviceLayout: DeviceLayout }) {
 }
 
 function resolveScreenMode(): { screenStatus: "ok" | "unsupported" | "rotate"; deviceLayout: DeviceLayout } {
+  const ua = navigator.userAgent;
+
+ const isIpadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+  const isTablet = /(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua) || isIpadOS;
+  const isMobile = /Mobile|iP(hone|od)|IEMobile|BlackBerry|Kindle|Opera Mini/i.test(ua);
+  const isDesktop = !isMobile && !isTablet;
+
+  const deviceLayout: DeviceLayout = isDesktop ? "desktop" : "tablet";
+
+  // 2. Detect orientation (requires window dimensions)
   const w = window.innerWidth;
   const h = window.innerHeight;
   const isLandscape = w > h;
-  const isTabletWidth = w >= TABLET_MIN_WIDTH && w < DESKTOP_MIN_WIDTH;
-  const isDesktopWidth = w >= DESKTOP_MIN_WIDTH;
-  const fallbackDeviceLayout: DeviceLayout = isDesktopWidth ? "desktop" : "tablet";
 
-  console.log(`Screen check: ${w}x${h}, landscape: ${isLandscape}, tabletWidth: ${isTabletWidth}, desktopWidth: ${isDesktopWidth}`);
+  console.log(`Screen check: Desktop: ${isDesktop}, Tablet: ${isTablet}, Mobile: ${isMobile}, Landscape: ${isLandscape}`);
 
-  if (!isLandscape && (isTabletWidth || isDesktopWidth)) {
-    return { screenStatus: "rotate", deviceLayout: isDesktopWidth ? "desktop" : "tablet" };
+  if (isMobile) {
+    return { screenStatus: "unsupported", deviceLayout };
   }
 
-  if (isLandscape && isDesktopWidth) {
+  if (!isLandscape && (isTablet || isDesktop)) {
+    return { screenStatus: "rotate", deviceLayout };
+  }
+
+  if (isLandscape && isDesktop) {
     return { screenStatus: "ok", deviceLayout: "desktop" };
   }
 
-  if (isLandscape && isTabletWidth) {
+  if (isLandscape && isTablet) {
     return { screenStatus: "ok", deviceLayout: "tablet" };
   }
 
-  return { screenStatus: "unsupported", deviceLayout: fallbackDeviceLayout };
+  return { screenStatus: "unsupported", deviceLayout };
 }
 
 export default function App() {
@@ -952,7 +964,8 @@ export default function App() {
   return (
   <>
     {screenStatus !== "ok" ? (
-      <UnsupportedScreen isRotate={screenStatus === "rotate"} />
+      // <UnsupportedScreen isRotate={screenStatus === "rotate"} />
+      <MobileHero deviceLayout={deviceLayout} />
     ) : (
       <>
         <AnimatePresence>
