@@ -111,7 +111,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
       },
       tablet: {
         position: { top: "10%", left: "35%" },
-        rotation: 10,
+        rotation: 16,
         size: { w: 360, h: 390 },
         labelOffset: 22,
       },
