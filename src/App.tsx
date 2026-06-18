@@ -44,8 +44,8 @@ interface RepelCardConfig {
 
 type ResolvedRepelCardConfig = Omit<RepelCardConfig, "layouts"> & RepelCardLayout;
 
-const TABLET_MIN_WIDTH = 768;
-const DESKTOP_MIN_WIDTH = 1024;
+const TABLET_MIN_WIDTH = 1204;
+const DESKTOP_MIN_WIDTH = 1436;
 
 const resolveFloatingCardLayout = (
   card: FloatingCardConfig,
@@ -87,9 +87,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 30,
       },
       tablet: {
-        position: { top: "10%", left: "30%" },
+        position: { top: "50%", left: "35%" },
         rotation: 3,
-        size: { w: 320, h: 170 },
+        size: { w: 320, h: 230 },
         labelOffset: 24,
       },
     },
@@ -109,9 +109,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 30,
       },
       tablet: {
-        position: { top: "16%", left: "26%" },
+        position: { top: "10%", left: "35%" },
         rotation: 10,
-        size: { w: 360, h: 290 },
+        size: { w: 360, h: 390 },
         labelOffset: 22,
       },
     },
@@ -131,9 +131,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 70,
       },
       tablet: {
-        position: { top: "18%", right: "55%" },
-        rotation: -13,
-        size: { w: 530, h: 230 },
+        position: { top: "12%", right: "60%" },
+        rotation: -30,
+        size: { w: 530, h: 280 },
         labelOffset: 56,
       },
     },
@@ -153,9 +153,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 15,
       },
       tablet: {
-        position: { bottom: "42%", left: "67%" },
-        rotation: 7,
-        size: { w: 300, h: 220 },
+        position: { bottom: "40%", left: "70%" },
+        rotation: 15,
+        size: { w: 300, h: 280 },
         labelOffset: 12,
       },
     },
@@ -176,7 +176,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 220,
       },
       tablet: {
-        position: { bottom: "-8%", right: "0%" },
+        position: { bottom: "8%", right: "0%" },
         rotation: 14,
         size: { w: 250, h: 250 },
         labelOffset: 176,
@@ -198,8 +198,8 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 40,
       },
       tablet: {
-        position: { bottom: "-12%", right: "12%" },
-        rotation: -5,
+        position: { bottom: "8%", right: "23%" },
+        rotation: -15,
         size: { w: 255, h: 320 },
         labelOffset: 30,
       },
@@ -220,7 +220,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
         labelOffset: 6,
       },
       tablet: {
-        position: { bottom: "55%", right: "23%" },
+        position: { bottom: "60%", right: "29%" },
         rotation: 7,
         size: { w: 165, h: 165 },
         labelOffset: 6,
@@ -438,9 +438,9 @@ const REPEL_CARDS_CONFIG: RepelCardConfig[] = [
         size: { w: 400, h: 400 },
       },
       tablet: {
-        position: { top: "38%", left: "-3%" },
+        position: { top: "38%", left: "3%" },
         rotation: 48,
-        size: { w: 300, h: 300 },
+        size: { w: 350, h: 350 },
       },
     },
   },
@@ -455,8 +455,8 @@ const REPEL_CARDS_CONFIG: RepelCardConfig[] = [
         size: { w: 180, h: 180 },
       },
       tablet: {
-        position: { top: "70%", left: "16%" },
-        rotation: -5,
+        position: { top: "70%", left: "20%" },
+        rotation: -10,
         size: { w: 150, h: 150 },
       },
     },
@@ -876,6 +876,8 @@ function resolveScreenMode(): { screenStatus: "ok" | "unsupported" | "rotate"; d
   const isTabletWidth = w >= TABLET_MIN_WIDTH && w < DESKTOP_MIN_WIDTH;
   const isDesktopWidth = w >= DESKTOP_MIN_WIDTH;
   const fallbackDeviceLayout: DeviceLayout = isDesktopWidth ? "desktop" : "tablet";
+
+  console.log(`Screen check: ${w}x${h}, landscape: ${isLandscape}, tabletWidth: ${isTabletWidth}, desktopWidth: ${isDesktopWidth}`);
 
   if (!isLandscape && (isTabletWidth || isDesktopWidth)) {
     return { screenStatus: "rotate", deviceLayout: isDesktopWidth ? "desktop" : "tablet" };
