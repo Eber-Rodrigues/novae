@@ -105,7 +105,7 @@ function ParticleCanvas({
 
         const a = d.alpha * (0.4 + 0.6 * Math.sin(d.pulse));
         ctx.globalAlpha = a;
-        ctx.fillStyle = "#ccff00";
+        ctx.fillStyle = "#B8D10D";
         ctx.beginPath();
         ctx.arc(d.x, d.y, d.size, 0, Math.PI * 2);
         ctx.fill();

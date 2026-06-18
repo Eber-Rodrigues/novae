@@ -394,7 +394,7 @@ export function HeroSection() {
       <div style={{
   position: "absolute",
   inset: 0,
-  background: "url('images/background4.png')",
+  background: "url('images/background2.png')",
   zIndex: 0,
   backgroundSize: "100% 100%",
   backgroundPosition: "center",
