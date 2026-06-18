@@ -302,8 +302,17 @@ export function Navbar() {
 }
  
  
-function FloatingCard({ card, index }: { card: ResolvedFloatingCardConfig; index: number }) {
+function FloatingCard({
+  card,
+  index,
+  deviceLayout,
+}: {
+  card: ResolvedFloatingCardConfig;
+  index: number;
+  deviceLayout: DeviceLayout;
+}) {
   const [isHovered, setIsHovered] = useState(false);
+  const isTablet = deviceLayout === "tablet";
   const positionStyle = {
     position: "absolute",
     width: card.size.w,
@@ -322,9 +331,11 @@ function FloatingCard({ card, index }: { card: ResolvedFloatingCardConfig; index
       style={{ ...positionStyle, pointerEvents: "none", outline: "none",
           WebkitTapHighlightColor: "transparent",
           WebkitUserSelect: "none",
-          userSelect: "none",}}
-      initial={{ opacity: 0, y: 30, rotate: baseRotate }}
-      animate={{ opacity: 1, y: 0, rotate: baseRotate }}
+         userSelect: "none",
+         touchAction: "manipulation",}}
+     initial={{ opacity: 0, y: 30, rotate: baseRotate }}
+     animate={{ opacity: 1, y: 0, rotate: baseRotate }}
+     whileTap={isTablet ? { scale: 0.92, transition: { duration: 0.14 } } : undefined}
      transition={{
   opacity: { duration: 0.8, delay: 0.4 + index * 0.1, ease: [0.16, 1, 0.3, 1] },
   y: { duration: 0.2, ease: "easeOut" },
@@ -467,9 +478,16 @@ const REPEL_CARDS_CONFIG: RepelCardConfig[] = [
   },
 ];
 
-function RepelCard({ card }: { card: ResolvedRepelCardConfig }) {
+function RepelCard({
+  card,
+  deviceLayout,
+}: {
+  card: ResolvedRepelCardConfig;
+  deviceLayout: DeviceLayout;
+}) {
   const ref = useRef<HTMLDivElement>(null);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const isTablet = deviceLayout === "tablet";
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const el = ref.current;
@@ -499,6 +517,7 @@ function RepelCard({ card }: { card: ResolvedRepelCardConfig }) {
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       animate={{ x: offset.x, y: offset.y }}
+      whileTap={isTablet ? { scale: 0.92, transition: { duration: 0.14 } } : undefined}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: "absolute",
@@ -508,6 +527,7 @@ function RepelCard({ card }: { card: ResolvedRepelCardConfig }) {
         rotate: `${card.rotation}deg`,
         ...card.position,
         pointerEvents: "auto",
+        touchAction: "manipulation",
       }}
     >
       <img
@@ -659,10 +679,10 @@ export function HeroSection({ deviceLayout }: { deviceLayout: DeviceLayout }) {
       {/* Floating cards */}
 <div className="hero-content" style={{ position: "absolute", inset: 0, zIndex: 10 }}>
   {floatingCards.map((card, i) => (
-    <FloatingCard key={card.id} card={card} index={i} />
+    <FloatingCard key={card.id} card={card} index={i} deviceLayout={deviceLayout} />
   ))}
   {repelCards.map((card) => (
-    <RepelCard key={card.id} card={card} />
+    <RepelCard key={card.id} card={card} deviceLayout={deviceLayout} />
   ))}
 </div>
 
