@@ -319,7 +319,10 @@ function FloatingCard({ card, index }: { card: ResolvedFloatingCardConfig; index
     
     <motion.a
       href={card.link}
-      style={{ ...positionStyle, pointerEvents: "none" }}
+      style={{ ...positionStyle, pointerEvents: "none", outline: "none",
+          WebkitTapHighlightColor: "transparent",
+          WebkitUserSelect: "none",
+          userSelect: "none",}}
       initial={{ opacity: 0, y: 30, rotate: baseRotate }}
       animate={{ opacity: 1, y: 0, rotate: baseRotate }}
      transition={{
