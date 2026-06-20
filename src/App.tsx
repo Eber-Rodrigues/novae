@@ -986,39 +986,36 @@ export default function App() {
 
   return (
   <>
-    {screenStatus !== "ok" ? (
-      // <UnsupportedScreen isRotate={screenStatus === "rotate"} />
-      <MobileHero deviceLayout={deviceLayout} />
-    ) : (
-      <>
-        <AnimatePresence>
-          {stage === "entry" && (
-            <EntryScreen onEnter={handleEnter} />
-          )}
-        </AnimatePresence>
+    <AnimatePresence>
+      {stage === "entry" && (
+        <EntryScreen onEnter={handleEnter} />
+      )}
+    </AnimatePresence>
 
-        <AnimatePresence>
-          {stage === "loading" && (
-            <LoadingOverlay onRevealComplete={() => {
-  sessionStorage.setItem("novae_animated", "true");
-  setStage("ready");
-}} />
-          )}
-        </AnimatePresence>
+    <AnimatePresence>
+      {stage === "loading" && (
+        <LoadingOverlay onRevealComplete={() => {
+          sessionStorage.setItem("novae_animated", "true");
+          setStage("ready");
+        }} />
+      )}
+    </AnimatePresence>
 
-        <motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: stage === "ready" ? 1 : 0 }}
-  transition={{ duration: 2.8, ease: "easeOut", delay: 0 }}
-  style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
->
-  <div className="hero-scale-root">
-    <Navbar />
-    <HeroSection deviceLayout={deviceLayout} />
-  </div>
-</motion.div>
-      </>
-    )}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: stage === "ready" ? 1 : 0 }}
+      transition={{ duration: 2.8, ease: "easeOut", delay: 0 }}
+      style={{ width: "100vw", height: "100vh", overflow: "hidden" }}
+    >
+      {screenStatus !== "ok" ? (
+        <MobileHero deviceLayout={deviceLayout} />
+      ) : (
+        <div className="hero-scale-root">
+          <Navbar />
+          <HeroSection deviceLayout={deviceLayout} />
+        </div>
+      )}
+    </motion.div>
   </>
 );
 }
