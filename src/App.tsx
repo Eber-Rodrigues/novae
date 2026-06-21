@@ -406,7 +406,7 @@ function FloatingCard({
     <p style={{
       fontFamily: "'Caveat', cursive",
       fontWeight: 700,
-      fontSize: "0.9em",
+      fontSize: "1em",
       color: "#1a1a1a",
       margin: 0,
       lineHeight: 1.1,
@@ -417,7 +417,7 @@ function FloatingCard({
     <p style={{
   fontFamily: "'Caveat', cursive",
   fontWeight: 500,
-  fontSize: "0.70em",
+  fontSize: "0.80em",
   color: "#2a2a2a",
   margin: "5px 0 0",
   lineHeight: 1.15,
