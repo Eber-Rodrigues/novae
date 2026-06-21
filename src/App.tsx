@@ -230,6 +230,11 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
   },
 ];
  
+
+const CURRENT_PROJECT_NOTE = {
+  title: "MOVEMENTOR",
+  description: "Helping Erasmus\n students connect, \nadapt and navigate\n university life \nabroad",
+};
  
 const NAV_LINKS = [
   { label: "About Us", href: "#novae" },
@@ -383,6 +388,45 @@ function FloatingCard({
   }}
   
 />
+
+{/* Handwritten text overlay — only for the sticky note card */}
+{card.id === "c7" && (
+  <div style={{
+    position: "absolute",
+    inset: 0,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    padding: "16% 14%",
+    textAlign: "center",
+    pointerEvents: "none",
+    transform: "rotate(1deg)",
+  }}>
+    <p style={{
+      fontFamily: "'Caveat', cursive",
+      fontWeight: 700,
+      fontSize: "0.9em",
+      color: "#1a1a1a",
+      margin: 0,
+      lineHeight: 1.1,
+      letterSpacing: "0.02em",
+    }}>
+      {CURRENT_PROJECT_NOTE.title}
+    </p>
+    <p style={{
+  fontFamily: "'Caveat', cursive",
+  fontWeight: 500,
+  fontSize: "0.70em",
+  color: "#2a2a2a",
+  margin: "5px 0 0",
+  lineHeight: 1.15,
+  whiteSpace: "pre-line",
+}}>
+  {CURRENT_PROJECT_NOTE.description}
+</p>
+  </div>
+)}
  
       </motion.div>
  
