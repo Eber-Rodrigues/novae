@@ -209,7 +209,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
   {
     id: "c7",
     label: "Current Project",
-    image: "images/note5.png",
+    image: "images/note6.png",
     link: "#current-project",
     zIndex: 2,
     labelPosition: "bottom",
