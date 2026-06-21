@@ -148,9 +148,9 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
     labelPosition: "bottom",
     layouts: {
       desktop: {
-        position: { bottom: "38%", left: "74%" },
+        position: { bottom: "38%", left: "75%" },
         rotation: 10,
-        size: { w: 360, h: 270 },
+        size: { w: 310, h: 220 },
         labelOffset: 15,
       },
       tablet: {
@@ -173,7 +173,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
       desktop: {
         position: { bottom: "-14%", right: "-2%" },
         rotation: 20,
-        size: { w: 300, h: 300 },
+        size: { w: 250, h: 250 },
         labelOffset: 220,
       },
       tablet: {
@@ -193,7 +193,7 @@ const CARDS_CONFIG: FloatingCardConfig[] = [
     labelPosition: "top",
     layouts: {
       desktop: {
-        position: { bottom: "-16%", right: "15%" },
+        position: { bottom: "-16%", right: "12%" },
         rotation: -7,
         size: { w: 300, h: 380 },
         labelOffset: 40,
