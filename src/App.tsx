@@ -631,7 +631,7 @@ export function HeroSection({ deviceLayout }: { deviceLayout: DeviceLayout }) {
       <div style={{
   position: "absolute",
   inset: 0,
-  background: "url('images/background2.png')",
+  background: "url('images/background7.png')",
   zIndex: 0,
   backgroundSize: "100% 100%",
   backgroundPosition: "center",
