@@ -1002,8 +1002,9 @@ export default function App() {
 });
 
   const handleEnter = () => {
-  const audio = new Audio("images/");
+  const audio = new Audio("images/audio.mp3");
   audio.volume = 1.0;
+  audio.playbackRate = 1.15;
   audio.play().catch(() => {});
   setStage("loading");
 };

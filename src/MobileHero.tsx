@@ -25,10 +25,17 @@ const STATIC_CARDS = [
   { id: "team", image: "images/team4.png", top: 120, left: 300, width: 120, rotate: 15, z: 5 },
   { id: "knowledge-base", image: "images/folder.png", top: 550, left: 260, width: 200, rotate: 20, z: 5 },
   { id: "projects", image: "images/notebook.png", top: 510, left: 110, width: 220, rotate: -10, z: 5 },
-  { id: "current-project", image: "images/note5.png", top: 185, left: 82, width: 80, rotate: -20, z: 5 },
+  { id: "current-project", image: "images/note6.png", top: 185, left: 82, width: 80, rotate: -20, z: 5 },
   { id: "pencil", image: "images/pencil.png", top: 400, left: 320, width: 200, rotate: -40, z: 5 },
   { id: "paper-clips", image: "images/paper_clips.png", top: 360, left: 80, width: 130, rotate: -8, z: 5 },
 ];
+
+
+const CURRENT_PROJECT_NOTE = {
+  title: "MOVEMENTOR",
+  description: "Helping Erasmus\nstudents connect,\nadapt and navigate\nuniversity life \nabroad",
+};
+
 
 function StaticCard({ card, delay }: { card: typeof STATIC_CARDS[number]; delay: number }) {
   return (
@@ -46,16 +53,55 @@ function StaticCard({ card, delay }: { card: typeof STATIC_CARDS[number]; delay:
       }}
     >
 
-      <img
-        src={card.image}
-        alt=""
-        style={{
-          width: "100%",
-          height: "auto",
-          objectFit: "contain",
-          filter: "drop-shadow(-8px 14px 9px rgba(15,12,8,0.55)) drop-shadow(-2px 4px 3px rgba(15,12,8,0.35))",
-        }}
-      />
+      <div style={{ position: "relative" }}>
+        <img
+          src={card.image}
+          alt=""
+          style={{
+            width: "100%",
+            height: "auto",
+            objectFit: "contain",
+            filter: "drop-shadow(-8px 14px 9px rgba(15,12,8,0.55)) drop-shadow(-2px 4px 3px rgba(15,12,8,0.35))",
+          }}
+        />
+
+        {card.id === "current-project" && (
+          <div style={{
+            position: "absolute",
+            inset: 0,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "16% 12%",
+            textAlign: "center",
+            pointerEvents: "none",
+          }}>
+            <p style={{
+              fontFamily: "'Caveat', cursive",
+              fontWeight: 700,
+              fontSize: "0.9em",
+              color: "#1a1a1a",
+              margin: 0,
+              lineHeight: 1.1,
+              letterSpacing: "0.02em",
+            }}>
+              {CURRENT_PROJECT_NOTE.title}
+            </p>
+            <p style={{
+              fontFamily: "'Caveat', cursive",
+              fontWeight: 500,
+              fontSize: "0.7em",
+              color: "#2a2a2a",
+              margin: "4px 0 0",
+              lineHeight: 1.15,
+              whiteSpace: "pre-line",
+            }}>
+              {CURRENT_PROJECT_NOTE.description}
+            </p>
+          </div>
+        )}
+      </div>
     </motion.div>
   );
 }
