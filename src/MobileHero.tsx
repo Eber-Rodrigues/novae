@@ -225,8 +225,8 @@ export default function MobileHero({ deviceLayout }: { deviceLayout?: string }) 
                   aria-label="Close menu"
                   style={{
                      position: "absolute",
-    top: 20 * CANVAS_SCALE,
-    right: 20 * CANVAS_SCALE,
+    top: 5 * CANVAS_SCALE,
+    right: 60 * CANVAS_SCALE,
     width: 42 * CANVAS_SCALE,
     height: 42 * CANVAS_SCALE,
     background: "rgba(255,255,255,0.08)",
