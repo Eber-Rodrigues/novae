@@ -224,16 +224,20 @@ export default function MobileHero({ deviceLayout }: { deviceLayout?: string }) 
                   onClick={() => setMenuOpen(false)}
                   aria-label="Close menu"
                   style={{
-                    position: "absolute",
-                    top: 20,
-                    right: 20,
-                    width: 42,
-                    height: 42,
-                    background: "rgba(255,255,255,0.08)",
-                    border: "0.5px solid rgba(255,255,255,0.14)",
-                    borderRadius: 10,
-                    color: "rgba(255,255,255,0.85)",
-                    fontSize: 18,
+                     position: "absolute",
+    top: 20 * CANVAS_SCALE,
+    right: 20 * CANVAS_SCALE,
+    width: 42 * CANVAS_SCALE,
+    height: 42 * CANVAS_SCALE,
+    background: "rgba(255,255,255,0.08)",
+    border: "0.5px solid rgba(255,255,255,0.14)",
+    borderRadius: 10,
+    color: "rgba(255,255,255,0.85)",
+    fontSize: 18 * CANVAS_SCALE,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
                   }}
                 >
                   ✕
